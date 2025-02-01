@@ -10,19 +10,30 @@ def character_count(text):
         res[letter] += 1
     return res
 
+def sort_on(key):
+    return key["count"]
+
+def sort_dict(dictionary):
+    sorted_dict = []
+    for letter in dictionary:
+        sorted_dict.append({"letter": letter, "count":dictionary[letter]})
+    sorted_dict.sort(reverse=True,key=sort_on)
+    return sorted_dict
+
 def main():
     try:
-        with open("books/frankenstein.txt") as f:
+        book_path = "books/frankenstein.txt"
+        with open(book_path) as f:
             file_contents = f.read()
-        # print(file_contents)
         word_count = (word_counter(file_contents))
         letter_count = character_count(file_contents)
-        print("--- Begin report of books/frankenstein ---")
+        sorted_list = sort_dict(letter_count)
+        print(f"--- Begin report of {book_path} ---")
         print(f"{word_count} words found in the document")
               
-        for letter in letter_count:
-            if letter.isalpha() == True:
-                print(f"The '{letter}' character was found {letter_count[letter]} times")
+        for letter in sorted_list:
+            if letter["letter"].isalpha() == True:
+                print(f"The '{letter['letter']}' character was found {letter['count']} times")
         
         print("--- End of Report ---")
     except FileNotFoundError:
